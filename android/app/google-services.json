@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "522989060345",
+    "project_id": "taskbunny-58049",
+    "storage_bucket": "taskbunny-58049.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522989060345:android:06ccb0705d198e5d172228",
+        "android_client_info": {
+          "package_name": "com.example.taskbunny"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5RlCplx41bLTeKQfHAIrioU79qGBpEfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
