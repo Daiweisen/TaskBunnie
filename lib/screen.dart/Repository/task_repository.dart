@@ -22,7 +22,7 @@ class LocalTaskRepository implements TaskRepository {
       final tasksJson = prefs.getStringList(_tasksKey) ?? [];
       
       return tasksJson
-          .map((taskString) => Task.fromJson(json.decode(taskString)))
+          .map((taskString) => Task.fromJson(json.decode(taskString) as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw TaskRepositoryException('Failed to load tasks: ${e.toString()}');

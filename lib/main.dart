@@ -1,8 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taskbunny/Bloc/task_bloc.dart';
+import 'package:taskbunny/Bloc/task_event.dart';
+import 'package:taskbunny/core/constant/app_constant.dart';
+import 'package:taskbunny/firebase_options.dart';
+import 'package:taskbunny/screen.dart/Repository/task_repository.dart';
 import 'package:taskbunny/screen.dart/UI/home_screen.dart';
+import 'package:taskbunny/screen.dart/theme/color.dart';
 import 'screen.dart/home.dart';
 
 
@@ -10,17 +17,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options: kIsWeb
-        ? const FirebaseOptions(
-             apiKey: "AIzaSyDMZqgzihSv8D4O8LddxRxNKirAfLUpkpo",
-  authDomain: "taskbunny-58049.firebaseapp.com",
-  projectId: "taskbunny-58049",
-  storageBucket: "taskbunny-58049.appspot.com",
-  messagingSenderId: "522989060345",
-  appId: "1:522989060345:web:c6e8ba1d0680300a172228",
-  measurementId: "G-NLD1S43RPG"
-          )
-        : null,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
   runApp(
@@ -29,30 +26,29 @@ void main() async {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return const MyApp();
+        return const TaskManagerApp();
       },
     ),
   );
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+class TaskManagerApp extends StatelessWidget {
+  const TaskManagerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-  
-      
-    
-        return MaterialApp(
+    return RepositoryProvider(
+      create: (context) => LocalTaskRepository(),
+      child: BlocProvider(
+        create: (context) => TaskBloc(
+          taskRepository: context.read<LocalTaskRepository>(),
+        )..add(const LoadTasks()),
+        child: MaterialApp(
+          title: AppConstants.appTitle,
           debugShowCheckedModeBanner: false,
-          title: 'TaskBunny',
-          theme: ThemeData(
-            fontFamily: "Poppins",
-            scaffoldBackgroundColor: const Color(0xFF0F1523),
-          ),
-          home:  HomeScreen(),
-        );
-      }
-  
+          theme: AppTheme.darkTheme,
+          home: const HomeScreen(),
+        ),
+      ),
+    );
   }
+}
